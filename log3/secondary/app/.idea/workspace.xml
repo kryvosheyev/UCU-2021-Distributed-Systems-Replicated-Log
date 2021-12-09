@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="39dc088b-44df-4bdb-85d8-512f292aca98" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="21BOeywuu6WotDv1bUgvhDbkHeH" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../master/app" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\0prj\2021-09-23-ucu-data-engineering\DS\UCU-2021-Replicated-Log\log3\secondary\routes" />
+      <recent name="E:\0prj\2021-09-23-ucu-data-engineering\2021-10-13-Distributed-Systems\UCU-2021-Distributed-Systems-Replicated-Log\log3\secondary\db" />
+      <recent name="E:\0prj\2021-09-23-ucu-data-engineering\2021-10-13-Distributed-Systems\UCU-2021-Distributed-Systems-Replicated-Log\log3\secondary\services" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="39dc088b-44df-4bdb-85d8-512f292aca98" name="Default Changelist" comment="" />
+      <created>1637411112594</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1637411112594</updated>
+      <workItem from="1637411113861" duration="5146000" />
+      <workItem from="1637416510268" duration="2210000" />
+      <workItem from="1637435806405" duration="25670000" />
+      <workItem from="1637590138815" duration="8000" />
+      <workItem from="1638209784200" duration="6116000" />
+      <workItem from="1638459082328" duration="995000" />
+      <workItem from="1638470335205" duration="1507000" />
+      <workItem from="1638481606841" duration="532000" />
+      <workItem from="1638482206771" duration="48000" />
+      <workItem from="1638523667187" duration="23000" />
+      <workItem from="1638530701750" duration="7837000" />
+      <workItem from="1638711005970" duration="20000" />
+      <workItem from="1638992723631" duration="66000" />
+      <workItem from="1638992819286" duration="15000" />
+      <workItem from="1638994673997" duration="9483000" />
+      <workItem from="1639006493036" duration="2531000" />
+      <workItem from="1639015022926" duration="621000" />
+      <workItem from="1639017839691" duration="29000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="481" y="191" key="FileChooserDialogImpl" timestamp="1639017866919">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="481" y="191" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1080/1920.0.1920.1080@0.0.1920.1040" timestamp="1639017866919" />
+    <state x="2401" y="198" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1080/1920.0.1920.1080@1920.0.1920.1080" timestamp="1638217714602" />
+    <state x="481" y="191" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1200/-1680.0.1680.1050@0.0.1920.1040" timestamp="1637416524257" />
+    <state x="554" y="263" width="963" height="674" key="find.popup" timestamp="1638998819416">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="554" y="263" width="963" height="674" key="find.popup/0.0.1920.1040/-1920.0.1920.1080/1920.0.1920.1080@0.0.1920.1040" timestamp="1638998819416" />
+    <state x="2474" y="273" width="963" height="700" key="find.popup/0.0.1920.1040/-1920.0.1920.1080/1920.0.1920.1080@1920.0.1920.1080" timestamp="1638211699515" />
+    <state x="554" y="263" width="731" height="674" key="find.popup/0.0.1920.1040/1920.0.1920.1200/-1680.0.1680.1050@0.0.1920.1040" timestamp="1638670278201" />
+  </component>
+</project>
