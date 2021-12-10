@@ -37,7 +37,7 @@ router.post('/add-message', async (req, res, next) => {
 
         let writeConcern=RETRY.default_write_concern;
         if (options && options.writeConcern) {
-            if(options.writeConcern < 1 || options.writeConcern > config.secondaries.length){
+            if(options.writeConcern < 1 || options.writeConcern > (config.secondaries.length+1)){
                 console.log("/master/add-message  incorrect writeConcern value");
                 res.status(400).send({msg: 'incorrect writeConcern value'});
             }
