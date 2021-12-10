@@ -15,9 +15,9 @@ const config = {
     SECONDARY_API_HEALTH_CHECK_URL: '/health',
     SECONDARY_API_ADD_MESSAGE_URL: '/secondary/add-messages',
     HEALTH_CHECK:{
-        //"HEALTHY" = send both realtime messages and RETRY work
-        //"SUSPECTED" = send only realtime messages. Do not send RETRY
-        //"UNHEALTHY" = do not send realtime messages. Do not send RETRY
+        //"HEALTHY" = send both realtime messages and RETRY_QUEUE work
+        //"SUSPECTED" = send only realtime messages. Do not send RETRY_QUEUE
+        //"UNHEALTHY" = do not send realtime messages. Do not send RETRY_QUEUE
         // on every health check, status will move left/right
         HEALTH_SCHEME:["HEALTHY", "HEALTHY", "SUSPECTED", "SUSPECTED", "UNHEALTHY"],
         // HEALTH_SCHEME:["HEALTHY", "SUSPECTED", "UNHEALTHY"],
@@ -29,7 +29,7 @@ const config = {
         start_interval: 2000,
 
         //The interval between health checks.
-        interval: 1000,
+        interval: 3000,
         //during every interval will add random(0...n),interval_jitter to the wait time
         interval_jitter: 800,
 
@@ -39,9 +39,30 @@ const config = {
         timeout: 3000,
 
     },
-    RETRY:{
-        //  exponentialBackOff = on failure, move right on INTERVALS[] and MESSAGES_QTY[]
-        //  + gradual recovery = on success, move left on INTERVALS[] and MESSAGES_QTY[]
+
+    // first, try to deliver a message infinite number of times, until the node becomes unhealthy
+    RETRY: {
+        default_write_concern: 1,
+
+        //  exponentialBackOff = on send failure, move right on INTERVALS[]
+        //  1.5^k
+        INTERVALS: [0, 1500, 2250, 3375],
+
+        // random(0...n) will be added to interval
+        interval_jitter: 100,
+
+        //The time to wait for a secondary node response when sending a retry message.
+        // If the timeout is reached, the message sending attempt
+        // will be considered a failure.
+        // You can set this value to be more than msg_timeout, because, for example,
+        // processing RETRY_QUEUE 100 messages can take more time than processing NORMAL SEND 1 message
+        timeout: 3000,
+    },
+
+    // if node is unhealthy, messages goes to RETRY_QUEUE
+    RETRY_QUEUE:{
+        //  exponentialBackOff = on send failure, move right on INTERVALS[] and MESSAGES_QTY[]
+        //  + gradual recovery = on send success, move left on INTERVALS[] and MESSAGES_QTY[]
 
         //  1.5^k
         INTERVALS: [  1000, 1500, 2250, 3375],
@@ -61,7 +82,7 @@ const config = {
         // If the timeout is reached, the message sending attempt
         // will be considered a failure.
         // You can set this value to be more than msg_timeout, because, for example,
-        // processing RETRY 100 messages can take more time than processing NORMAL SEND 1 message
+        // processing RETRY_QUEUE 100 messages can take more time than processing NORMAL SEND 1 message
         timeout: 3000,
 
         // for each secondary, we will check retry buffer.

@@ -1,12 +1,7 @@
-const fs = require("fs");
-const fsPromises = fs.promises;
-const moment = require('moment');
-const config = require('../config');
 const _ = require("lodash");
 const {HEALTH_STATUSES} = require("../constants");
-let AsyncLock = require('async-lock');
-
-let lock = new AsyncLock();
+var Mutex = require('async-mutex').Mutex;
+const stateMutex = new Mutex();
 
 //  STATE_LOCK
 let STATE = {
@@ -21,14 +16,12 @@ let STATE = {
 };
 
 async function getState(){
-    let state = undefined;
-    await lock.acquire("STATE_LOCK", function() {
-        state = {...STATE};
-        // console.log("STATE_LOCK Done");
-    }, function(err, ret) {
-        // console.log("STATE_LOCK release")
-    }, {});
-    return state;
+    const release = await stateMutex.acquire();
+    try {
+        return {...STATE};
+    } finally {
+        release();
+    }
 }
 
 function getUnhealthySecondaries(secondaries_with_health_data){
@@ -53,7 +46,8 @@ function getAvailableSecondaries(secondaries_with_health_data){
 }
 
 async function secondaryHealthHasChanged(nodes) {
-    await lock.acquire("STATE_LOCK", function() {
+    const release = await stateMutex.acquire();
+    try {
         let state = {...STATE};
         state.secondaries_with_health_data = {...nodes};
         state.availableSecondaries = getAvailableSecondaries(nodes);
@@ -69,64 +63,63 @@ async function secondaryHealthHasChanged(nodes) {
             console.log(`hasQuorum was ${!state.hasQuorum}, now ${state.hasQuorum}`);
         }
         STATE = {...state};
-        // console.log("STATE_LOCK Done");
-    }, function(err, ret) {
-        // console.log("STATE_LOCK release")
-    }, {});
+    } finally {
+        release();
+    }
 };
 
 async function secondaryRetryParamsHaveChanged(nodes) {
-    await lock.acquire("STATE_LOCK", function() {
+    const release = await stateMutex.acquire();
+    try {
         STATE.retry_params = {...nodes};
-        // console.log("STATE_LOCK Done");
-    }, function(err, ret) {
-        // console.log("STATE_LOCK release")
-    }, {});
+    } finally {
+        release();
+    }
 };
 
 async function isNodeAvailableByNodeName(nodeName) {
-    let isAvailable=false;
-    await lock.acquire("STATE_LOCK", function() {
+    const release = await stateMutex.acquire();
+    try {
+        let isAvailable=false;
         for(let i=0; i<STATE.availableSecondaries.length; i++){
             if(nodeName.valueOf()===STATE.availableSecondaries[i].name.valueOf()){
                 isAvailable = true;
             }
         }
-        // console.log("STATE_LOCK Done");
-    }, function(err, ret) {
-        // console.log("STATE_LOCK release")
-    }, {});
-    return isAvailable;
+        return isAvailable;
+    } finally {
+        release();
+    }
 };
 
 async function getHealthByNodeName(nodeName) {
-    let node=undefined;
-    await lock.acquire("STATE_LOCK", function() {
+    const release = await stateMutex.acquire();
+    try {
+        let node=undefined;
         for(let i=0; i<STATE.secondaries_with_health_data.length; i++){
             if(nodeName.valueOf()===STATE.secondaries_with_health_data[i].name.valueOf()){
                 node = {...STATE.secondaries_with_health_data[i]};
             }
         }
-        // console.log("STATE_LOCK Done");
-    }, function(err, ret) {
-        // console.log("STATE_LOCK release")
-    }, {});
-    return node;
+        return node;
+    } finally {
+        release();
+    }
 };
 
 async function getRetryParamsByNodeName(nodeName) {
-    let retry_params=undefined;
-    await lock.acquire("STATE_LOCK", function() {
+    const release = await stateMutex.acquire();
+    try {
+        let retry_params=undefined;
         for(let i=0; i<STATE.retry_params.length; i++){
             if(nodeName.valueOf()===STATE.retry_params[i].name.valueOf()){
                 retry_params = {...STATE.retry_params[i]};
             }
         }
-        // console.log("STATE_LOCK Done");
-    }, function(err, ret) {
-        // console.log("STATE_LOCK release")
-    }, {});
-    return retry_params;
+        return retry_params;
+    } finally {
+        release();
+    }
 };
 
 // async function saveState(state) {

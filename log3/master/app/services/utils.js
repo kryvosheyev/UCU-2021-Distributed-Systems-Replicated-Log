@@ -7,7 +7,7 @@ const _ = require("lodash");
 const config = require('../config');
 const {SECONDARY_API_ADD_MESSAGE_URL} = require('../config');
 
-const sleep = (ms) => {
+async function sleep(ms) {
     return new Promise(resolve =>
         setTimeout(() => {
             resolve();
@@ -92,5 +92,6 @@ module.exports = {
     isEmpty,
     sendPostHTTP,
     reqToNodeSendMsg,
-    sendResponse
+    sendResponse,
+    sleep
 }

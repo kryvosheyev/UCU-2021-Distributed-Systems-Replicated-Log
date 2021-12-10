@@ -4,14 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 const cors = require('cors');
 const HEALTH_CHECK_SERVICE = require('./services/health-check.service');
-const RETRY_PARAMS_SERVICE = require('./services/retry-params.service');
-const RETRY_SERVICE = require('./services/retry.service');
+const RETRY_QUEUE_PARAMS_SERVICE = require('./services/retry-queue-params.service');
+const RETRY_QUEUE_SERVICE = require('./services/retry-queue.service');
 
 const NODES = require('./config').secondaries;
 
 HEALTH_CHECK_SERVICE.startHealthCheckMonitors(NODES);
-RETRY_PARAMS_SERVICE.initBackOffRecovery(NODES);
-RETRY_SERVICE.startRetryMonitors(NODES);
+RETRY_QUEUE_PARAMS_SERVICE.initBackOffRecovery(NODES);
+RETRY_QUEUE_SERVICE.startRetryMonitors(NODES);
 
 var indexRouter = require('./routes/index');
 var masterRouter = require('./routes/master');

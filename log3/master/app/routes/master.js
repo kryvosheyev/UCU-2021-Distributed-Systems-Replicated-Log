@@ -9,6 +9,7 @@ const UTILS = require('../services/utils');
 const STATE_SERVICE = require('../services/state.service');
 const STORAGE_SERVICE = require('../services/master-storage.service');
 const PROCESS_SERVICE = require('../services/process.service');
+const {RETRY} = require('../config');
 
 
 router.post('/add-message', async (req, res, next) => {
@@ -34,7 +35,7 @@ router.post('/add-message', async (req, res, next) => {
             return res.status(400).send(responseBody);
         }
 
-        let writeConcern=1;
+        let writeConcern=RETRY.default_write_concern;
         if (options && options.writeConcern) {
             if(options.writeConcern < 1 || options.writeConcern > config.secondaries.length){
                 console.log("/master/add-message  incorrect writeConcern value");

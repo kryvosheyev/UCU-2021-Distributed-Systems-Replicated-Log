@@ -4,22 +4,15 @@ const axios = require('axios');
 const {HEALTH_CHECK} = require('../config');
 const {SECONDARY_API_HEALTH_CHECK_URL} = require('../config');
 const STATE_SERVICE = require('../services/state.service');
-let AsyncLock = require('async-lock');
+const UTILS = require('../services/utils');
+var Mutex = require('async-mutex').Mutex;
+const healthCheckMutex = new Mutex();
 
-let lock = new AsyncLock();
 // HEALTH_CHECK_LOCK
-
 let NODES = [];
 
-const sleep = (ms) => {
-    return new Promise(resolve =>
-        setTimeout(() => {
-            resolve();
-        }, ms));
-};
-
 async function startHealthCheckMonitors(nodes) {
-    await sleep(HEALTH_CHECK.start_interval);
+    await UTILS.sleep(HEALTH_CHECK.start_interval);
     for(let i=0;i<nodes.length;i++){
         let node = {
             name: nodes[i].name,
@@ -44,20 +37,21 @@ async function getHealthState(nodeName) {
 }
 
 async function getHealthStatesReport() {
-    let states=[];
-    await lock.acquire("HEALTH_CHECK_LOCK", function() {
+    const release = await healthCheckMutex.acquire();
+    try {
+        let states=[];
         for(let i=0; i<NODES.length; i++){
             states.push(`${NODES[i].name}: ${NODES[i].state}`);
         }
-        // console.log("HEALTH_CHECK_LOCK Done");
-    }, function(err, ret) {
-        // console.log("HEALTH_CHECK_LOCK release")
-    }, {});
-    return states;
+        return states;
+    } finally {
+        release();
+    }
 }
 
 async function setHealthState(nodeName, healthResponse){
-    await lock.acquire("HEALTH_CHECK_LOCK", function() {
+    const release = await healthCheckMutex.acquire();
+    try {
         for(let i=0; i<NODES.length; i++){
             if(nodeName.valueOf()===NODES[i].name.valueOf()){
                 let newStateIndex = NODES[i]._stateIndex;
@@ -76,10 +70,9 @@ async function setHealthState(nodeName, healthResponse){
                 STATE_SERVICE.secondaryHealthHasChanged(NODES);
             }
         }
-        // console.log("HEALTH_CHECK_LOCK Done");
-    }, function(err, ret) {
-        // console.log("HEALTH_CHECK_LOCK release")
-    }, {});
+    } finally {
+        release();
+    }
 }
 
 async function healthCheck(nodeName, nodeUrl) {
@@ -87,7 +80,7 @@ async function healthCheck(nodeName, nodeUrl) {
         let result = await reqToNode(nodeUrl, HEALTH_CHECK.timeout);
         await setHealthState(nodeName, result.HEALTH_STATUS);
         let intervalAfterReq = HEALTH_CHECK.interval + Math.round(Math.random() * HEALTH_CHECK.interval_jitter);
-        await sleep(intervalAfterReq);
+        await UTILS.sleep(intervalAfterReq);
     }
 
     async function reqToNode(url, timeout) {
@@ -112,6 +105,5 @@ async function healthCheck(nodeName, nodeUrl) {
 
 module.exports = {
     startHealthCheckMonitors,
-    getHealthState,
     getHealthStatesReport
 }
