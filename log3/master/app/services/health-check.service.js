@@ -1,9 +1,11 @@
 const {HEALTH_STATUSES} = require("../constants");
 const _ = require("lodash");
 const axios = require('axios');
+const config = require('../config');
 const {HEALTH_CHECK} = require('../config');
 const {SECONDARY_API_HEALTH_CHECK_URL} = require('../config');
 const STATE_SERVICE = require('../services/state.service');
+const SEND_SERVICE = require('../services/send.service');
 const UTILS = require('../services/utils');
 var Mutex = require('async-mutex').Mutex;
 const healthCheckMutex = new Mutex();
@@ -11,7 +13,8 @@ const healthCheckMutex = new Mutex();
 // HEALTH_CHECK_LOCK
 let NODES = [];
 
-async function startHealthCheckMonitors(nodes) {
+async function startHealthCheckMonitors() {
+    let nodes = [...config.secondaries];
     await UTILS.sleep(HEALTH_CHECK.start_interval);
     for(let i=0;i<nodes.length;i++){
         let node = {
@@ -29,10 +32,15 @@ async function startHealthCheckMonitors(nodes) {
 }
 
 async function getHealthState(nodeName) {
-    for(let i=0; i<NODES.length; i++){
-        if(nodeName.valueOf()===NODES[i].name.valueOf()){
-            return NODES[i].state;
+    const release = await healthCheckMutex.acquire();
+    try {
+        for(let i=0; i<NODES.length; i++){
+            if(nodeName.valueOf()===NODES[i].name.valueOf()){
+                return NODES[i].state;
+            }
         }
+    } finally {
+        release();
     }
 }
 
@@ -79,6 +87,12 @@ async function healthCheck(nodeName, nodeUrl) {
     while (true) {
         let result = await reqToNode(nodeUrl, HEALTH_CHECK.timeout);
         await setHealthState(nodeName, result.HEALTH_STATUS);
+        let state = await getHealthState(nodeName);
+        if(state.valueOf() === HEALTH_STATUSES.UNHEALTHY.valueOf()){
+            SEND_SERVICE.pauseSend(nodeName);
+        } else {
+            SEND_SERVICE.resumeSend(nodeName);
+        }
         let intervalAfterReq = HEALTH_CHECK.interval + Math.round(Math.random() * HEALTH_CHECK.interval_jitter);
         await UTILS.sleep(intervalAfterReq);
     }
@@ -105,5 +119,6 @@ async function healthCheck(nodeName, nodeUrl) {
 
 module.exports = {
     startHealthCheckMonitors,
+    getHealthState,
     getHealthStatesReport
 }

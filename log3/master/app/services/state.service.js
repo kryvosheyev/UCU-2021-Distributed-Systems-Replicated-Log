@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const {HEALTH_STATUSES} = require("../constants");
+const {HEALTH_CHECK} = require('../config');
 var Mutex = require('async-mutex').Mutex;
 const stateMutex = new Mutex();
 
@@ -49,7 +50,7 @@ async function secondaryHealthHasChanged(nodes) {
     const release = await stateMutex.acquire();
     try {
         let state = {...STATE};
-        state.secondaries_with_health_data = {...nodes};
+        state.secondaries_with_health_data = [...nodes];
         state.availableSecondaries = getAvailableSecondaries(nodes);
         state.unhealthySecondaries = getUnhealthySecondaries(nodes);
 
@@ -71,7 +72,7 @@ async function secondaryHealthHasChanged(nodes) {
 async function secondaryRetryParamsHaveChanged(nodes) {
     const release = await stateMutex.acquire();
     try {
-        STATE.retry_params = {...nodes};
+        STATE.retry_params = [...nodes];
     } finally {
         release();
     }
@@ -95,13 +96,13 @@ async function isNodeAvailableByNodeName(nodeName) {
 async function getHealthByNodeName(nodeName) {
     const release = await stateMutex.acquire();
     try {
-        let node=undefined;
+        let healthStatus = HEALTH_CHECK.HEALTH_SCHEME[HEALTH_CHECK.start_health_index];
         for(let i=0; i<STATE.secondaries_with_health_data.length; i++){
             if(nodeName.valueOf()===STATE.secondaries_with_health_data[i].name.valueOf()){
-                node = {...STATE.secondaries_with_health_data[i]};
+                healthStatus = STATE.secondaries_with_health_data[i].state;
             }
         }
-        return node;
+        return healthStatus;
     } finally {
         release();
     }

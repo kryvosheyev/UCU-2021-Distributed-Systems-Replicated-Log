@@ -4,14 +4,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 const cors = require('cors');
 const HEALTH_CHECK_SERVICE = require('./services/health-check.service');
-const RETRY_QUEUE_PARAMS_SERVICE = require('./services/retry-queue-params.service');
-const RETRY_QUEUE_SERVICE = require('./services/retry-queue.service');
+const BATCH_RETRY_PARAMS_SERVICE = require('./services/batch-retry-params.service');
+const BATCH_RETRY_SERVICE = require('./services/batch-retry.service');
+const SEND_SERVICE = require('./services/send.service');
 
-const NODES = require('./config').secondaries;
+SEND_SERVICE.initNodeMutexes().then(
+    console.log("initNodeMutexes done")
+);
+HEALTH_CHECK_SERVICE.startHealthCheckMonitors().then(
+    console.log("startHealthCheckMonitors done")
+);
+BATCH_RETRY_PARAMS_SERVICE.initBackOffRecovery().then(
+    console.log("initBackOffRecovery done")
+);
+BATCH_RETRY_SERVICE.startRetryMonitors().then(
+    console.log("startRetryMonitors done")
+);
 
-HEALTH_CHECK_SERVICE.startHealthCheckMonitors(NODES);
-RETRY_QUEUE_PARAMS_SERVICE.initBackOffRecovery(NODES);
-RETRY_QUEUE_SERVICE.startRetryMonitors(NODES);
 
 var indexRouter = require('./routes/index');
 var masterRouter = require('./routes/master');

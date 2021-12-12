@@ -37,7 +37,7 @@ function isEmpty(obj){
 
 function sendResponse(res, status, body){
     if(!res.headersSent) {
-        console.log("sending 1st time body=", body);
+        console.log("sending response to client=", body);
         res.status(status).send(body);
     } else {
         //console.log("headersSent already for status=", status, " body=", body);
@@ -81,7 +81,7 @@ async function reqToNodeSendMsg(node, url, data, timeout) {
                 resolve({node:node, added:[]});
             }
         } catch (err) {
-            console.log(`reqToNodeSendMsg failed to send msg to node=${node.name}`);
+            // console.log(`reqToNodeSendMsg failed to send msg to node=${node.name}`);
             resolve({node:node, added:[]})
         }
     })

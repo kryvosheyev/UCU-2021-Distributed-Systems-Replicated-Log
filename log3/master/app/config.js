@@ -15,9 +15,9 @@ const config = {
     SECONDARY_API_HEALTH_CHECK_URL: '/health',
     SECONDARY_API_ADD_MESSAGE_URL: '/secondary/add-messages',
     HEALTH_CHECK:{
-        //"HEALTHY" = send both realtime messages and RETRY_QUEUE work
-        //"SUSPECTED" = send only realtime messages. Do not send RETRY_QUEUE
-        //"UNHEALTHY" = do not send realtime messages. Do not send RETRY_QUEUE
+        //"HEALTHY" = send both realtime messages and BATCH_RETRY work
+        //"SUSPECTED" = send only realtime messages. Do not send BATCH_RETRY
+        //"UNHEALTHY" = do not send realtime messages. Do not send BATCH_RETRY
         // on every health check, status will move left/right
         HEALTH_SCHEME:["HEALTHY", "HEALTHY", "SUSPECTED", "SUSPECTED", "UNHEALTHY"],
         // HEALTH_SCHEME:["HEALTHY", "SUSPECTED", "UNHEALTHY"],
@@ -40,7 +40,7 @@ const config = {
 
     },
 
-    // first, try to deliver a message infinite number of times, until the node becomes unhealthy
+    // first, try to deliver a message infinite number of times, until WriteConcern is satisfied
     RETRY: {
         default_write_concern: 1,
 
@@ -54,13 +54,12 @@ const config = {
         //The time to wait for a secondary node response when sending a retry message.
         // If the timeout is reached, the message sending attempt
         // will be considered a failure.
-        // You can set this value to be more than msg_timeout, because, for example,
-        // processing RETRY_QUEUE 100 messages can take more time than processing NORMAL SEND 1 message
         timeout: 3000,
     },
 
-    // if node is unhealthy, messages goes to RETRY_QUEUE
-    RETRY_QUEUE:{
+    // if WriteConcern is satisfied but the message still has not been delivered to the node(s), then this message goes to BATCH_RETRY
+    // In BATCH_RETRY, each node will have separate process, which will send messages in batches to that node
+    BATCH_RETRY:{
         //  exponentialBackOff = on send failure, move right on INTERVALS[] and MESSAGES_QTY[]
         //  + gradual recovery = on send success, move left on INTERVALS[] and MESSAGES_QTY[]
 
@@ -82,7 +81,7 @@ const config = {
         // If the timeout is reached, the message sending attempt
         // will be considered a failure.
         // You can set this value to be more than msg_timeout, because, for example,
-        // processing RETRY_QUEUE 100 messages can take more time than processing NORMAL SEND 1 message
+        // processing BATCH_RETRY 100 messages can take more time than processing NORMAL SEND 1 message
         timeout: 3000,
 
         // for each secondary, we will check retry buffer.
