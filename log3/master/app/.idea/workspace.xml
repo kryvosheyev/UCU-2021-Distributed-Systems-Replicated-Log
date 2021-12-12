@@ -3,14 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="455781ba-b669-411f-a1bf-5e8d5c016f62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/health-check.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/health-check.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/process.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/process.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/retry-queue-params.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/batch-retry-params.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/retry-queue.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/batch-retry.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/send.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/send.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/state.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/state.service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +90,7 @@
       <workItem from="1639300704208" duration="57000" />
       <workItem from="1639301086817" duration="1417000" />
       <workItem from="1639306865204" duration="11549000" />
-      <workItem from="1639341396960" duration="6328000" />
+      <workItem from="1639341396960" duration="6953000" />
     </task>
     <servers />
   </component>

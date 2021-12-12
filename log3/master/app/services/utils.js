@@ -1,10 +1,5 @@
-const fs = require("fs");
-const crypto = require('crypto');
 const axios = require('axios');
-let CRC32 = require('crc-32');
-const moment = require('moment');
 const _ = require("lodash");
-const config = require('../config');
 const {SECONDARY_API_ADD_MESSAGE_URL} = require('../config');
 
 async function sleep(ms) {
