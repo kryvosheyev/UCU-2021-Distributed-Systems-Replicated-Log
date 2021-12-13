@@ -17,7 +17,7 @@
     "crypto-js": "^4.0.0",
     "debug": "^2.6.9",
     "expo-server-sdk": "^3.6.0",
-    "express": "~4.16.1",
+    "express": "^4.16.1",
     "http-errors": "^1.6.3",
     "jade": "~1.11.0",
     "jaeger-client": "^3.18.1",
