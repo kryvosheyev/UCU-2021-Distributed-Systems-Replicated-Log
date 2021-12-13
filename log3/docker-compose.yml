@@ -8,7 +8,7 @@ services:
     volumes:
       - "./master/app:/src/app"
     ports:
-      - 3000
+      - 3000:3000
       
   secondary_1:
     container_name: secondary_1
@@ -30,3 +30,18 @@ services:
     ports:
       - 6000
 
+#  toxiproxy:
+#    image: shopify/toxiproxy
+#    ports:
+#      - 8574
+#      - 5001
+#      - 5002
+#      - 6001
+#      - 6002
+#
+#  mytoxiproxy-configurer:
+#    build: 
+#      context: ./toxiproxy
+#      dockerfile: Dockerfile-toxiproxy-configurer
+#    depends_on:
+#      - toxiproxy

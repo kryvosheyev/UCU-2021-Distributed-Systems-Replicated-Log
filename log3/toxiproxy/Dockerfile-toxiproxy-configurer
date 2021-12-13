@@ -1,0 +1,6 @@
+FROM alpine:3.2 
+
+RUN apk update 
+RUN apk upgrade 
+RUN apk add curl bash
+CMD  curl -s -XPOST -d '{ "name": "log3_dev_secondary_1", "listen": "0.0.0.0:5001",	 "upstream": "http://127.0.0.1:6001",	"enabled": true	}'    http://toxiproxy:8474/proxies		
