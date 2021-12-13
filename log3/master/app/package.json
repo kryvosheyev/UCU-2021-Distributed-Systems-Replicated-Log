@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js --port 3000"
+    "start": "nodemon -L app/server.js --port 3000"
   },
   "dependencies": {
     "async": "^3.2.0",

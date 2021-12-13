@@ -1,6 +1,11 @@
-web:
-  build: .
-  volumes:
-    - "./app:/src/app"
-  ports:
-    - "3000:3000"
+version: "3.4"
+services:
+  master:
+    container_name: standalone_master
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - "./app:/app"
+    ports:
+      - 30000:3000

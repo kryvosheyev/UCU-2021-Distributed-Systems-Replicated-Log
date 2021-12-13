@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const debug = require('debug')('swan-sp-api:server');
+const debug = require('debug')('rlog3:sec');
 const http = require('http');
 /**
  * Module dependencies.

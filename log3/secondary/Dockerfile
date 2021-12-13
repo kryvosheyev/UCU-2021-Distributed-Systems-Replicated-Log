@@ -6,12 +6,13 @@ RUN npm install nodemon -g
 
 WORKDIR /src
 
-COPY package*.json /src
+COPY app/package*.json /src/
 
 RUN npm install
 
 ADD app/nodemon.json /src/nodemon.json
 
-EXPOSE 6001
+#EXPOSE 6001
 
-CMD npm start
+#CMD npm start
+CMD node app/server.js --port 6000

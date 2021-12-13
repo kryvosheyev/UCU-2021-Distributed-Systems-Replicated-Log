@@ -1,9 +1,9 @@
 {
-  "name": "log-1",
+  "name": "rlog3",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js --port 6001"
+    "start": "nodemon -L app/server.js --port 6000"
   },
   "dependencies": {
     "async": "^3.2.0",

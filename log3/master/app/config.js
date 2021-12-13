@@ -3,8 +3,8 @@ const config = {
 
     // name must be unique
     secondaries: [
-        {name:'s1', url:'http://127.0.0.1:5001'},
-        {name:'s2', url:'http://127.0.0.1:5002'}
+        {name:'s1', url:'host.docker.internal:6001'},
+        {name:'s2', url:'host.docker.internal:6002'}
     ],
 
     //The time to wait for a secondary node response when sending a message.

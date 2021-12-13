@@ -1,6 +1,11 @@
-web:
-  build: .
-  volumes:
-    - "./app:/src/app"
-  ports:
-    - "3000:3000"
+version: "3.4"
+services:
+  log3sec1:
+    container_name: log3sec1
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - "./app:/src/app"
+    ports:
+      - 6001:6000

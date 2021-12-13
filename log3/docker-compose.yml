@@ -1,0 +1,27 @@
+version: "3.4"
+services:
+  master:
+    container_name: master
+    build:
+      dockerfile: Dockerfile
+      context: ./master
+    volumes:
+      - "./app:/app"
+    ports:
+      - 3000:3000
+      
+  secondary_1:
+    container_name: secondary_1
+    build:
+      dockerfile: Dockerfile
+      context: ./secondary
+    ports:
+      - 6001:6000
+
+  secondary_2:
+    container_name: secondary_2
+    build:
+      dockerfile: Dockerfile
+      context: ./secondary
+    ports:
+      - 6002:6000
