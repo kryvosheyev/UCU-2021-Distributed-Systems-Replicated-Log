@@ -6,6 +6,12 @@ services:
       dockerfile: Dockerfile
       context: .
     volumes:
-      - "./app:/app"
+      - "./app:/src/app"
     ports:
-      - 30000:3000
+      - 3000
+    networks:
+      - my-net
+
+networks:
+  my-net:
+    driver: bridge

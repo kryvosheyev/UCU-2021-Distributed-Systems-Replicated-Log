@@ -7,10 +7,11 @@ RUN npm install nodemon -g
 WORKDIR /src
 
 COPY app/package*.json /src/
+COPY . .
 
 RUN npm install
 
-ADD app/nodemon.json /src/nodemon.json
+#ADD app/nodemon.json /src/nodemon.json
 
 #EXPOSE 6001
 

@@ -6,22 +6,36 @@ services:
       dockerfile: Dockerfile
       context: ./master
     volumes:
-      - "./app:/app"
+      - "./master/app:/src/app"
     ports:
-      - 3000:3000
+      - 3000
+    networks:
+      - my-net
       
   secondary_1:
     container_name: secondary_1
     build:
       dockerfile: Dockerfile
       context: ./secondary
+    volumes:
+      - "./secondary/app:/src/app"
     ports:
-      - 6001:6000
+      - 6000
+    networks:
+      - my-net
 
   secondary_2:
     container_name: secondary_2
     build:
       dockerfile: Dockerfile
       context: ./secondary
+    volumes:
+      - "./secondary/app:/src/app"
     ports:
-      - 6002:6000
+      - 6000
+    networks:
+      - my-net
+
+networks:
+  my-net:
+    driver: bridge
