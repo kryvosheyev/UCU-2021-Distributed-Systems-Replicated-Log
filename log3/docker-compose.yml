@@ -9,8 +9,6 @@ services:
       - "./master/app:/src/app"
     ports:
       - 3000
-    networks:
-      - my-net
       
   secondary_1:
     container_name: secondary_1
@@ -21,8 +19,6 @@ services:
       - "./secondary/app:/src/app"
     ports:
       - 6000
-    networks:
-      - my-net
 
   secondary_2:
     container_name: secondary_2
@@ -33,9 +29,4 @@ services:
       - "./secondary/app:/src/app"
     ports:
       - 6000
-    networks:
-      - my-net
 
-networks:
-  my-net:
-    driver: bridge
